@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile</title>
+    <style>
+        /* General styles */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f8f9fa; /* Light gray background */
+    color: #333; /* Text color */
+    margin: 0;
+    padding: 0;
+}
+
+/* Navigation bar styles */
+.navbar {
+    overflow: hidden;
+    background-color: #333;
+}
+
+.navbar a {
+    float: left;
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 20px;
+    text-decoration: none;
+}
+
+.navbar a:hover {
+    background-color: #ddd;
+    color: black;
+}
+
+/* Profile container styles */
+.profile-container {
+    max-width: 600px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    animation: slideIn 0.5s ease-in-out; /* Animation */
+}
+
+/* Profile heading styles */
+h2 {
+    text-align: center;
+    color: #007bff; /* Blue heading color */
+}
+
+/* User information styles */
+.user-info {
+    margin-top: 20px;
+}
+
+.user-info p {
+    margin-bottom: 10px;
+}
+
+.user-info span {
+    font-weight: bold;
+}
+
+/* Quote styles */
+.quote {
+    margin-top: 20px;
+    text-align: center;
+    font-style: italic;
+}
+
+/* Email prompt styles */
+.email-prompt {
+    margin-top: 20px;
+    text-align: center;
+    animation: fadeIn 0.5s ease-in-out; /* Animation */
+}
+
+.email-prompt input[type="email"] {
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    transition: border-color 0.3s; /* Animation */
+}
+
+.email-prompt input[type="email"]:focus {
+    border-color: #007bff; /* Blue border color on focus */
+}
+
+.email-prompt .btn {
+    padding: 10px 20px;
+    font-size: 16px;
+    color: #fff;
+    background-color: #007bff; /* Blue button background */
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s; /* Animation */
+}
+
+.email-prompt .btn:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+}
+
+/* Thank you message styles */
+.thank-you-message {
+    margin-top: 20px;
+    text-align: center;
+    color: green;
+    animation: fadeIn 0.5s ease-in-out; /* Animation */
+}
+
+/* Animation for fading in */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+/* Animation for sliding in */
+@keyframes slideIn {
+    from {
+        transform: translateY(-50px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+    </style>
+</head>
+<body>
+    <!-- Navigation bar -->
+    <div class="navbar">
+        <a href="/prediction">Predict</a>
+        <a href="/dashboard">Dashboard</a>
+        <a href="/about">About</a>
+        <a href="/logout">Logout</a>
+    </div>
+
+    <!-- Profile container -->
+    <div class="profile-container">
+        <h2>User Profile</h2>
+        <div class="user-info">
+            <p><span>Username:</span> {{ username }}</p>
+            <p><span>Joined:</span> April 19, 2024</p>
+            <p><span>Last Login:</span> April 22, 2024</p>
+            <!-- You can modify the date format as needed -->
+        </div>
+    </div>
+
+    <!-- Motivational quote -->
+    <div class="quote">
+        <p>"Believe you can and you're halfway there." - Theodore Roosevelt</p>
+    </div>
+
+    <!-- Email prompt -->
+    <div class="email-prompt" id="emailPrompt">
+        <p>Please provide your email address to receive updates:</p>
+        <input type="email" id="emailInput" placeholder="Your Email Address">
+        <button class="btn" onclick="submitEmail()">Submit</button>
+    </div>
+
+    <!-- Thank you message -->
+    <div class="thank-you-message" id="thankYouMessage" style="display: none;">
+        <p>Thank you for providing your email address!</p>
+    </div>
+
+    <script>
+        function submitEmail() {
+            // Get the entered email address
+            var email = document.getElementById('emailInput').value;
+
+            // Perform validation if needed
+
+            // Display thank you message
+            document.getElementById('emailPrompt').style.display = 'none';
+            document.getElementById('thankYouMessage').style.display = 'block';
+        }
+    </script>
+</body>
+</html>

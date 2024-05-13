@@ -1,0 +1,115 @@
+<!-- templates/dashboard.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title><style>
+        /* Style for the navigation bar */
+        .navbar {
+            overflow: hidden;
+            background-color: #333;
+        }
+        body {
+            background-color: #e4e6e6; /* Your chosen background color */
+        }
+        .navbar a {
+            float: left;
+            display: block;
+            color: white;
+            text-align: center;
+            padding: 14px 20px;
+            text-decoration: none;
+        }
+
+        .navbar a:hover {
+            background-color: #ddd;
+            color: black;
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js">
+        
+    </script>
+</head>
+<body>
+    <!-- Navigation bar -->
+    <div class="navbar">
+        <a href="/prediction">Predict</a>
+        <a href="/profile">Profile</a>
+        <a href="/about">About</a>
+        <a href="/logout">Logout</a>
+    </div>
+
+    <!-- Time range selector -->
+    <label for="timeRange"><h4>Select Time Range:</h4></label>
+    <select id="timeRange" onchange="updateGraph()">
+        <option value="5years"><h4>5 Years</h4></option>
+        <option value="1year"><h4>1 Year</h4></option>
+        <option value="6months"><h4>6 Months</h4></option>
+        <option value="3months"><h4>3 Months</h4></option>
+        <option value="1month"><h4>1 Month</h4></option>
+        <option value="7days"><h4>7 Days</h4></option>
+        <option value="1day"><h4>1 Day</h4></option>
+    </select>
+
+    <!-- Bitcoin Graph -->
+    <canvas id="bitcoinChart"></canvas>
+
+    <script>
+        // Global variable to store the chart instance
+        let bitcoinChart;
+
+        // Function to update the graph based on selected time range
+        function updateGraph() {
+            const timeRange = document.getElementById('timeRange').value;
+            const apiUrl = `https://api.coingecko.com/api/v3/coins/bitcoin/market_chart?vs_currency=usd&days=${timeRange}`;
+
+            // Fetch Bitcoin data from the CoinGecko API
+            fetch(apiUrl)
+                .then(response => response.json())
+                .then(data => {
+                    const prices = data.prices.map(entry => entry[1]);
+                    const dates = data.prices.map(entry => new Date(entry[0]));
+
+                    // Clear previous chart instance if it exists
+                    if (bitcoinChart) {
+                        bitcoinChart.destroy();
+                    }
+
+                    // Create a new Chart instance
+                    const ctx = document.getElementById('bitcoinChart').getContext('2d');
+                    bitcoinChart = new Chart(ctx, {
+                        type: 'line',
+                        data: {
+                            labels: dates,
+                            datasets: [{
+                                label: 'Bitcoin Price',
+                                data: prices,
+                                borderColor: 'blue',
+                                backgroundColor: 'rgba(0, 0, 255, 0.1)'
+                            }]
+                        },
+                        options: {
+                            scales: {
+                                xAxes: [{
+                                    type: 'time',
+                                    time: {
+                                        unit: 'day'
+                                    }
+                                }],
+                                yAxes: [{
+                                    ticks: {
+                                        beginAtZero: false
+                                    }
+                                }]
+                            }
+                        }
+                    });
+                });
+        }
+
+        // Initial call to update the graph with default time range
+        updateGraph();
+    </script>
+</body>
+</html>

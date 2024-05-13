@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prediction Graph</title>
+    <style>
+        /* Style for the navigation bar */
+        .navbar {
+            overflow: hidden;
+            background-color: #333;
+        }
+
+        .navbar a {
+            float: left;
+            display: block;
+            color: white;
+            text-align: center;
+            padding: 14px 20px;
+            text-decoration: none;
+        }
+
+        .navbar a:hover {
+            background-color: #ddd;
+            color: black;
+        }
+    </style>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+</head>
+<body>
+    <!-- Navigation bar -->
+    <div class="navbar">
+        <a href="/dashboard">Dashboard</a>
+        <a href="/profile">Profile</a>
+        <a href="/about">About</a>
+        <a href="/logout">Logout</a>
+    </div>
+
+    <!-- Time range selector -->
+    <label for="timeRange">Select Time Range:</label>
+    <select id="timeRange" onchange="updateGraph()">
+        <option value="1year">1 Year</option>
+        <option value="6months">6 Months</option>
+        <option value="3months">3 Months</option>
+        <option value="1month">1 Month</option>
+        <option value="7days">7 Days</option>
+        <option value="1day">1 Day</option>
+    </select>
+
+    <!-- Prediction Graph -->
+    <div id="predictionGraph"></div>
+
+    <script>
+        // Function to plot the graph
+        function plotGraph(prices, dates) {
+            // Create Plotly trace
+            const trace = {
+                x: dates,
+                y: prices,
+                mode: 'lines+markers',
+                name: 'Predicted Bitcoin Price'
+            };
+
+            // Define layout
+            const layout = {
+                title: 'Predicted Bitcoin Prices',
+                xaxis: {
+                    title: 'Date'
+                },
+                yaxis: {
+                    title: 'Price (USD)'
+                }
+            };
+
+            // Plot the graph
+            Plotly.newPlot('predictionGraph', [trace], layout);
+        }
+
+        // Function to update the graph based on selected time range
+        function updateGraph() {
+            const timeRange = document.getElementById('timeRange').value;
+            const apiUrl = `/api/predicted_prices?range=${timeRange}`;
+
+            // Fetch predicted prices from the API
+            fetch(apiUrl)
+                .then(response => response.json())
+                .then(data => {
+                    const prices = data.prices;
+                    const dates = data.dates;
+
+                    // Call plotGraph function to update the graph
+                    plotGraph(prices, dates);
+                });
+        }
+
+        // Call updateGraph function when the page loads
+        updateGraph();
+    </script>
+</body>
+</html>
